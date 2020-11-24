@@ -20,13 +20,12 @@ function SignUp() {
       setError("");
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
+      setLoading(false);
       history.push("/");
       console.log("registered");
     } catch {
       setError("Failed to create an account");
     }
-
-    setLoading(false);
   }
 
   return (
