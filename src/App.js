@@ -1,29 +1,17 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/privateRoute";
-import SignUp from "./routes/signUp";
-import Login from "./routes/signIn";
-import Home from "./routes/home";
-import { AuthProvider } from "./components/Provider";
-import ForgotPassword from "./routes/forgotPwd";
+import SignUp from "./features/signUp";
+import Login from "./features/signIn";
+import Home from "./features/home";
+import { AuthProvider } from "./providers/AuthProvider";
+import ForgotPassword from "./features/forgotPwd";
 import Navbar from "./components/Navbar";
-import Complain from "./routes/complain";
+import Complain from "./features/complain";
+import MainComponent from "./components/MainComponent";
 
 function App() {
-  return (
-    <Router>
-      <AuthProvider>
-        <Navbar />
-        <Switch>
-          <PrivateRoute exact path="/" component={Home} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
-          <Route path="/forgot-password" component={ForgotPassword} />
-          <PrivateRoute exact path="/complain" component={Complain} />
-        </Switch>
-      </AuthProvider>
-    </Router>
-  );
+  return <MainComponent />;
 }
 
 export default App;

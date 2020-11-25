@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import app from "../../components/Firebase/firebase";
-import { useAuth } from "../../components/context";
+import app from "../../config/firebase";
+import useAuth from "../../hooks/useAuth";
 import { useHistory } from "react-router-dom";
 import { Form, Button, Container } from "react-bootstrap";
 function Complain() {

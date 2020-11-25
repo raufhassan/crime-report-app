@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert, Container } from "react-bootstrap";
-import { useAuth } from "../../components/context";
+import useAuth from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 
 export default function ForgotPassword() {
