@@ -20,8 +20,8 @@ export default function Login() {
       setError("");
       setLoading(false);
       history.push("/");
-    } catch {
-      setError("Failed to log in");
+    } catch (err) {
+      setError(err.message);
       setLoading(false);
     }
   }
@@ -35,7 +35,7 @@ export default function Login() {
         <Card>
           <Card.Body>
             <h2 className="text-center mb-4">Log In</h2>
-            {error && <Alert variant="danger">{error}</Alert>}
+            {error ? <Alert variant="danger">{error}</Alert> : null}
             <Form onSubmit={handleSubmit}>
               <Form.Group>
                 <Form.Label>Email</Form.Label>

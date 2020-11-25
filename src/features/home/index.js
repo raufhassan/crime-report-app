@@ -16,11 +16,10 @@ export default function Home() {
     const todoRef = app.database().ref("complains");
     todoRef.on("value", (snapshot) => {
       const todos = snapshot.val();
-      const todoList = [];
-      for (let id in todos) {
-        todoList.push({ id, ...todos[id] });
-      }
-      setComplains(todoList);
+      var dbComplains = Object.keys(todos).map(function (key, index) {
+        return todos[key];
+      });
+      setComplains(dbComplains);
       setLoading(false);
     });
   }, []);
