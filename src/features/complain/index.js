@@ -45,6 +45,7 @@ function Complain() {
   const onSubmit = (e) => {
     e.preventDefault();
     // e.stopPropagation();
+    state.userId = currentUser.uid;
     app
       .database()
       .ref("complains")

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { auth } from "../config/firebase";
+import { firebaseAuth } from "../config/firebase";
 import { useHistory } from "react-router-dom";
 
 export const AuthContext = React.createContext();
@@ -9,20 +9,20 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const history = useHistory();
   const signup = (email, password) => {
-    return auth.createUserWithEmailAndPassword(email, password);
+    return firebaseAuth.createUserWithEmailAndPassword(email, password);
   };
 
   const login = (email, password) => {
-    return auth.signInWithEmailAndPassword(email, password);
+    return firebaseAuth.signInWithEmailAndPassword(email, password);
   };
 
   const logout = () => {
-    return auth.signOut();
+    return firebaseAuth.signOut();
     history.push("/login");
   };
 
   const resetPassword = (email) => {
-    return auth.sendPasswordResetEmail(email);
+    return firebaseAuth.sendPasswordResetEmail(email);
   };
 
   const updatePassword = (password) => {
@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setLoading(false);
     });

@@ -23,8 +23,8 @@ function SignUp() {
       setLoading(false);
       history.push("/");
       console.log("registered");
-    } catch {
-      setError("Failed to create an account");
+    } catch (err) {
+      setError(err);
     }
   }
 
