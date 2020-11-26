@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button, Alert, Table } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import app from "../../config/firebase";
 import Loading from "../../components/Loader";
 
