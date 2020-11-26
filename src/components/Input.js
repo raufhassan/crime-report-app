@@ -8,7 +8,6 @@ const Input = ({ label, onChange, type, value, name, required }) => {
         type={type}
         value={value}
         name={name}
-        // onChange={(e) => onChange(e, name)}
         onChange={onChange}
         required={required}
       />

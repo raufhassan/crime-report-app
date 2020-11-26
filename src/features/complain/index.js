@@ -24,13 +24,11 @@ const Complain = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // e.stopPropagation();
     state.userId = currentUser.uid;
     Firebase.database()
       .ref("complains")
       .push(state)
       .then((docRef) => {
-        console.log("submitted");
         history.push("/");
       })
       .catch((error) => {
@@ -39,7 +37,7 @@ const Complain = () => {
   };
 
   return (
-    <Container style={{ minHeight: "100vh" }}>
+    <Container className="min-height">
       <div className="text-center my-5">
         <h1>Complain form</h1>
       </div>

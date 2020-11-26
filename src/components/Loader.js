@@ -3,7 +3,7 @@ import React from "react";
 const Loading = () => {
   return (
     <Loader
-      style={style.LoadBlock}
+      className="Loader"
       type="Puff"
       color="#00BFFF"
       height={100}
@@ -11,10 +11,5 @@ const Loading = () => {
     />
   );
 };
-const style = {
-  LoadBlock: {
-    textAlign: "center",
-    marginTop: "20%",
-  },
-};
+
 export default Loading;
