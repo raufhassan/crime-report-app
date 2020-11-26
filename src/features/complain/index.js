@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import app from "../../config/firebase";
+import Firebase from "../../config/firebase";
 import useAuth from "../../hooks/useAuth";
 import { useHistory } from "react-router-dom";
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Button, Container, Alert } from "react-bootstrap";
 import Dropdown from "../../components/CitiesDropdown";
 import Input from "../../components/Input";
-function Complain() {
+const Complain = () => {
   const [state, setState] = useState({
     name: "",
     date: "",
@@ -16,38 +16,17 @@ function Complain() {
   });
   const { currentUser } = useAuth();
   const history = useHistory();
+  const [error, setError] = useState("");
 
-  const onChange = (e, Name) => {
-    switch (Name) {
-      case "name":
-        setState({ ...state, name: e.target.value });
-        break;
-      case "date":
-        setState({ ...state, date: e.target.value });
-        break;
-      case "description":
-        setState({ ...state, description: e.target.value });
-        break;
-      case "contact":
-        setState({ ...state, contact: e.target.value });
-        break;
-      case "againstName":
-        setState({ ...state, againstName: e.target.value });
-        break;
-      case "city":
-        setState({ ...state, city: e.target.value });
-        break;
-      default:
-        console.log("no change");
-    }
+  const onChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     // e.stopPropagation();
     state.userId = currentUser.uid;
-    app
-      .database()
+    Firebase.database()
       .ref("complains")
       .push(state)
       .then((docRef) => {
@@ -55,7 +34,7 @@ function Complain() {
         history.push("/");
       })
       .catch((error) => {
-        console.error("Error adding document: ", error);
+        setError(error);
       });
   };
 
@@ -71,6 +50,7 @@ function Complain() {
           onChange={onChange}
           type={"text"}
           name={"name"}
+          required={true}
         />
         <Input
           type={"date"}
@@ -78,6 +58,7 @@ function Complain() {
           onChange={onChange}
           label={"Date of complain:"}
           name={"date"}
+          required={true}
         />
         <Input
           type={"text"}
@@ -87,6 +68,7 @@ function Complain() {
             "Name of the company/person against which/whom the complaint is filed:"
           }
           name={"againstName"}
+          required={true}
         />
         <Input
           type={"number"}
@@ -94,6 +76,7 @@ function Complain() {
           onChange={onChange}
           label={"Contact:"}
           name={"contact"}
+          required={true}
         />
         <Input
           type={"text"}
@@ -101,14 +84,16 @@ function Complain() {
           onChange={onChange}
           label={"The complaint is regarding:"}
           name={"description"}
+          required={true}
         />
         <Dropdown value={state.city} name={"city"} onChange={onChange} />
+        {error ? <Alert variant="danger">{error}</Alert> : null}
         <Button className="w-100" type="submit">
-          Sign Up
+          Submit
         </Button>
       </Form>
     </Container>
   );
-}
+};
 
 export default Complain;

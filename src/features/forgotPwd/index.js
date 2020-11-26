@@ -3,7 +3,7 @@ import { Form, Button, Card, Alert, Container } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 
-export default function ForgotPassword() {
+const ForgotPassword = () => {
   const emailRef = useRef();
   const { resetPassword } = useAuth();
   const [error, setError] = useState("");
@@ -57,4 +57,5 @@ export default function ForgotPassword() {
       </div>
     </Container>
   );
-}
+};
+export default ForgotPassword;

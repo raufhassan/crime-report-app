@@ -14,6 +14,7 @@ export default function NavBar() {
       alert(error);
     }
   };
+
   return (
     <>
       <Navbar bg="primary" expand="lg" variant="dark">

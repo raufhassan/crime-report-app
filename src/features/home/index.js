@@ -16,7 +16,7 @@ export default function Home() {
     const todoRef = app.database().ref("complains");
     todoRef.on("value", (snapshot) => {
       const todos = snapshot.val();
-      var dbComplains = Object.keys(todos).map(function (key, index) {
+      var dbComplains = Object.keys(todos).map((key, index) => {
         return todos[key];
       });
       setComplains(dbComplains);
