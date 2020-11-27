@@ -38,7 +38,7 @@ export default function NavBar() {
                     <NavDropdown.Item as={Link} to="/crime">
                       Crime report
                     </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/missig-person">
+                    <NavDropdown.Item as={Link} to="/missing-person">
                       Missing person
                     </NavDropdown.Item>
                   </NavDropdown>

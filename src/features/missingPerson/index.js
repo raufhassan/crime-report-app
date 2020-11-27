@@ -6,14 +6,16 @@ import { Form, Button, Container, Alert } from "react-bootstrap";
 import Dropdown from "../../components/CitiesDropdown";
 import Input from "../../components/Input";
 import { phoneReg } from "../../constants/regex";
-const Complain = () => {
+
+const MissingPerson = () => {
   const [state, setState] = useState({
     name: "",
-    date: "",
-    description: "",
+    personName: "",
+    missingSince: "",
+    reportDate: "",
+    details: "",
     contact: "",
     city: "Huntsville",
-    againstName: "",
     status: "pending",
   });
   const { currentUser } = useAuth();
@@ -23,12 +25,9 @@ const Complain = () => {
     nameErr: "",
     descErr: "",
     contactErr: "",
-    againstNameErr: "",
+    personNameErr: "",
   });
 
-  const onChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
   const validate = () => {
     let errors = [];
     let err = { ...inputErr };
@@ -38,7 +37,7 @@ const Complain = () => {
     } else {
       err.nameErr = "";
     }
-    if (state.description.length < 10) {
+    if (state.details.length < 10) {
       err.descErr = "description must be greater than ten words";
       errors.push("descErr");
     } else {
@@ -50,11 +49,11 @@ const Complain = () => {
     } else {
       err.contactErr = "";
     }
-    if (state.againstName.length < 5) {
-      err.againstNameErr = "name must be greater than 5 words";
+    if (state.personName.length < 5) {
+      err.personNameErr = "name must be greater than 5 words";
       errors.push("descErr");
     } else {
-      err.againstNameErr = "";
+      err.personNameErr = "";
     }
     setInputErr({ ...err });
     return errors;
@@ -62,11 +61,11 @@ const Complain = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const isValid = validate();
-    if (isValid.length === 0) {
+    const isvalid = validate();
+    if (isvalid.length === 0) {
       state.userId = currentUser.uid;
       Firebase.database()
-        .ref("complains")
+        .ref("missingPersons")
         .push(state)
         .then((docRef) => {
           history.push("/");
@@ -77,10 +76,13 @@ const Complain = () => {
     }
   };
 
+  const onChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
   return (
     <Container className="min-height">
       <div className="text-center my-5">
-        <h1>Complain form</h1>
+        <h1>Missing person report form</h1>
       </div>
       <Form onSubmit={onSubmit}>
         <Input
@@ -93,52 +95,56 @@ const Complain = () => {
           error={inputErr.nameErr}
         />
         <Input
-          type={"date"}
-          value={state.date}
+          label={"Name of missing person:"}
+          value={state.personName}
           onChange={onChange}
-          label={"Date of complain:"}
-          name={"date"}
-          required={true}
-        />
-
-        <Input
           type={"text"}
-          value={state.againstName}
-          onChange={onChange}
-          label={
-            "Name of the company/person against which/whom the complaint is filed:"
-          }
-          name={"againstName"}
+          name={"personName"}
           required={true}
-          error={inputErr.againstNameErr}
+          error={inputErr.personNameErr}
         />
-
         <Input
-          type={"number"}
+          label={"Person is missing since:"}
+          value={state.missingSince}
+          onChange={onChange}
+          type={"datetime-local"}
+          name={"missingSince"}
+          required={true}
+        />
+        <Input
+          label={"Date and time of report:"}
+          value={state.reportDate}
+          onChange={onChange}
+          type={"datetime-local"}
+          name={"reportDate"}
+          required={true}
+        />
+        <Input
+          label={"Contact:"}
           value={state.contact}
           onChange={onChange}
-          label={"Contact:"}
+          type={"number"}
           name={"contact"}
           required={true}
           error={inputErr.contactErr}
         />
         <Input
-          type={"text"}
-          value={state.description}
+          label={"Details of a person:"}
+          value={state.details}
           onChange={onChange}
-          label={"The complaint is regarding:"}
-          name={"description"}
+          type={"text"}
+          name={"details"}
           required={true}
           error={inputErr.descErr}
         />
         <Dropdown value={state.city} name={"city"} onChange={onChange} />
         {error ? <Alert variant="danger">{error}</Alert> : null}
         <Button className="w-100" type="submit">
-          Submit
+          Report
         </Button>
       </Form>
     </Container>
   );
 };
 
-export default Complain;
+export default MissingPerson;

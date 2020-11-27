@@ -1,11 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Form, Button, Card, Alert, Container } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 import { Link, useHistory } from "react-router-dom";
+import Input from "../../components/Input";
 const SignUp = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+    passwordConfirm: "",
+  });
   const { signup } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,20 +16,22 @@ const SignUp = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+    if (state.password !== state.passwordConfirm) {
       return setError("Passwords do not match");
     }
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await signup(state.email, state.password);
       setLoading(false);
       history.push("/");
-      console.log("registered");
     } catch (err) {
       setError(err);
     }
   }
+  const onChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
 
   return (
     <Container className="d-flex align-items-center justify-content-center min-height">
@@ -36,22 +41,30 @@ const SignUp = () => {
             <h2 className="text-center mb-4">Sign Up</h2>
             {error ? <Alert variant="danger">{error}</Alert> : null}
             <Form onSubmit={handleSubmit}>
-              <Form.Group id="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" ref={emailRef} required />
-              </Form.Group>
-              <Form.Group id="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" ref={passwordRef} required />
-              </Form.Group>
-              <Form.Group id="password-confirm">
-                <Form.Label>Password Confirmation</Form.Label>
-                <Form.Control
-                  type="password"
-                  ref={passwordConfirmRef}
-                  required
-                />
-              </Form.Group>
+              <Input
+                name={"email"}
+                type={"email"}
+                onChange={onChange}
+                label={"Email"}
+                value={state.email}
+                required={true}
+              />
+              <Input
+                name={"password"}
+                type={"password"}
+                onChange={onChange}
+                label={"Password"}
+                value={state.password}
+                required={true}
+              />
+              <Input
+                name={"passwordConfirm"}
+                type={"password"}
+                onChange={onChange}
+                label={"Email"}
+                value={state.passwordConfirm}
+                required={true}
+              />
               <Button disabled={loading} className="w-100" type="submit">
                 Sign Up
               </Button>
