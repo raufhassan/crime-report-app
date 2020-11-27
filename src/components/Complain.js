@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import Firebase from "../../config/firebase";
-import useAuth from "../../hooks/useAuth";
+import Firebase from "../config/firebase";
+import useAuth from "../hooks/useAuth";
 import { useHistory } from "react-router-dom";
 import { Form, Button, Container, Alert } from "react-bootstrap";
-import Dropdown from "../../components/CitiesDropdown";
-import Input from "../../components/Input";
-import { phoneReg } from "../../constants/regex";
+import Dropdown from "./Dropdown";
+import Input from "./Input";
+import validationFunc from "../utils/validation";
+import cities from "../constants/cities";
 const Complain = () => {
   const [state, setState] = useState({
     name: "",
     date: "",
-    description: "",
+    details: "",
     contact: "",
     city: "Huntsville",
     againstName: "",
@@ -29,41 +30,11 @@ const Complain = () => {
   const onChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  const validate = () => {
-    let errors = [];
-    let err = { ...inputErr };
-    if (state.name.length < 5) {
-      err.nameErr = "name must be greater than 5 words";
-      errors.push("nameErr");
-    } else {
-      err.nameErr = "";
-    }
-    if (state.description.length < 10) {
-      err.descErr = "description must be greater than ten words";
-      errors.push("descErr");
-    } else {
-      err.descErr = "";
-    }
-    if (!phoneReg.test(state.contact)) {
-      err.contactErr = "invalid phone no";
-      errors.push("phoneErr");
-    } else {
-      err.contactErr = "";
-    }
-    if (state.againstName.length < 5) {
-      err.againstNameErr = "name must be greater than 5 words";
-      errors.push("descErr");
-    } else {
-      err.againstNameErr = "";
-    }
-    setInputErr({ ...err });
-    return errors;
-  };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const isValid = validate();
-    if (isValid.length === 0) {
+    const isvalid = validationFunc(inputErr, state, setInputErr);
+    if (isvalid.length === 0) {
       state.userId = currentUser.uid;
       Firebase.database()
         .ref("complains")
@@ -124,14 +95,20 @@ const Complain = () => {
         />
         <Input
           type={"text"}
-          value={state.description}
+          value={state.details}
           onChange={onChange}
           label={"The complaint is regarding:"}
-          name={"description"}
+          name={"details"}
           required={true}
           error={inputErr.descErr}
         />
-        <Dropdown value={state.city} name={"city"} onChange={onChange} />
+        <Dropdown
+          value={state.city}
+          name={"city"}
+          options={cities}
+          label={"city"}
+          onChange={onChange}
+        />
         {error ? <Alert variant="danger">{error}</Alert> : null}
         <Button className="w-100" type="submit">
           Submit

@@ -32,13 +32,31 @@ export default function NavBar() {
                 <>
                   <Nav.Link onClick={handleLogout}>LogOut</Nav.Link>
                   <NavDropdown title="Add report" id="basic-nav-dropdown">
-                    <NavDropdown.Item as={Link} to="/complain">
+                    <NavDropdown.Item
+                      as={Link}
+                      to={{
+                        pathname: "/add-report",
+                        addProps: "complain",
+                      }}
+                    >
                       Complain
                     </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/crime">
+                    <NavDropdown.Item
+                      as={Link}
+                      to={{
+                        pathname: "/add-report",
+                        addProps: "crime",
+                      }}
+                    >
                       Crime report
                     </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/missing-person">
+                    <NavDropdown.Item
+                      as={Link}
+                      to={{
+                        pathname: "/add-report",
+                        addProps: "missingPerson",
+                      }}
+                    >
                       Missing person
                     </NavDropdown.Item>
                   </NavDropdown>

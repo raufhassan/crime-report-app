@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Firebase from "../../config/firebase";
-import useAuth from "../../hooks/useAuth";
+import Firebase from "../config/firebase";
+import useAuth from "../hooks/useAuth";
 import { useHistory } from "react-router-dom";
 import { Form, Button, Container, Alert } from "react-bootstrap";
-import Dropdown from "../../components/CitiesDropdown";
-import Input from "../../components/Input";
-import { phoneReg } from "../../constants/regex";
-
+import Dropdown from "./Dropdown";
+import Input from "./Input";
+import validationFunc from "../utils/validation";
+import cities from "../constants/cities";
 const MissingPerson = () => {
   const [state, setState] = useState({
     name: "",
@@ -28,40 +28,10 @@ const MissingPerson = () => {
     personNameErr: "",
   });
 
-  const validate = () => {
-    let errors = [];
-    let err = { ...inputErr };
-    if (state.name.length < 5) {
-      err.nameErr = "name must be greater than 5 words";
-      errors.push("nameErr");
-    } else {
-      err.nameErr = "";
-    }
-    if (state.details.length < 10) {
-      err.descErr = "description must be greater than ten words";
-      errors.push("descErr");
-    } else {
-      err.descErr = "";
-    }
-    if (!phoneReg.test(state.contact)) {
-      err.contactErr = "invalid phone no";
-      errors.push("phoneErr");
-    } else {
-      err.contactErr = "";
-    }
-    if (state.personName.length < 5) {
-      err.personNameErr = "name must be greater than 5 words";
-      errors.push("descErr");
-    } else {
-      err.personNameErr = "";
-    }
-    setInputErr({ ...err });
-    return errors;
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    const isvalid = validate();
+    const isvalid = validationFunc(inputErr, state, setInputErr);
+    console.log(isvalid);
     if (isvalid.length === 0) {
       state.userId = currentUser.uid;
       Firebase.database()
@@ -137,7 +107,13 @@ const MissingPerson = () => {
           required={true}
           error={inputErr.descErr}
         />
-        <Dropdown value={state.city} name={"city"} onChange={onChange} />
+        <Dropdown
+          value={state.city}
+          name={"city"}
+          options={cities}
+          label={"city"}
+          onChange={onChange}
+        />
         {error ? <Alert variant="danger">{error}</Alert> : null}
         <Button className="w-100" type="submit">
           Report

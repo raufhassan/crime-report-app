@@ -1,12 +1,11 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import cities from "../constants/cities";
-const Dropdown = ({ value, name, onChange }) => {
+const Dropdown = ({ value, name, onChange, options, label }) => {
   return (
     <Form.Group>
-      <Form.Label>City</Form.Label>
+      <Form.Label>{label}</Form.Label>
       <Form.Control as="select" value={value} name={name} onChange={onChange}>
-        {cities.map((el, i) => {
+        {options.map((el, i) => {
           return <option key={i}> {el}</option>;
         })}
       </Form.Control>
