@@ -28,8 +28,8 @@ const CrimeReport = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const isvalid = validationFunc(inputErr, state, setInputErr);
-    if (!isvalid) {
+    const isError = validationFunc(inputErr, state, setInputErr);
+    if (!isError) {
       state.userId = currentUser.uid;
       Firebase.database()
         .ref("crimes")
