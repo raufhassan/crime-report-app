@@ -8,3 +8,7 @@
 .max-width {
   max-width: 400px;
 }
+.error {
+  color: red;
+  font-size: small;
+}

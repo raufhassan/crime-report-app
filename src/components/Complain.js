@@ -1,22 +1,31 @@
 import React, { useState } from "react";
-import Firebase from "../../config/firebase";
-import useAuth from "../../hooks/useAuth";
+import Firebase from "../config/firebase";
+import useAuth from "../hooks/useAuth";
 import { useHistory } from "react-router-dom";
 import { Form, Button, Container, Alert } from "react-bootstrap";
-import Dropdown from "../../components/CitiesDropdown";
-import Input from "../../components/Input";
+import Dropdown from "./Dropdown";
+import Input from "./Input";
+import validationFunc from "../utils/validation";
+import cities from "../constants/cities";
 const Complain = () => {
   const [state, setState] = useState({
     name: "",
     date: "",
-    description: "",
+    details: "",
     contact: "",
-    city: "",
+    city: "Huntsville",
     againstName: "",
+    status: "pending",
   });
   const { currentUser } = useAuth();
   const history = useHistory();
   const [error, setError] = useState("");
+  const [inputErr, setInputErr] = useState({
+    nameErr: "",
+    descErr: "",
+    contactErr: "",
+    againstNameErr: "",
+  });
 
   const onChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -24,16 +33,19 @@ const Complain = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    state.userId = currentUser.uid;
-    Firebase.database()
-      .ref("complains")
-      .push(state)
-      .then((docRef) => {
-        history.push("/");
-      })
-      .catch((error) => {
-        setError(error);
-      });
+    const isError = validationFunc(inputErr, state, setInputErr);
+    if (!isError) {
+      state.userId = currentUser.uid;
+      Firebase.database()
+        .ref("complains")
+        .push(state)
+        .then((docRef) => {
+          history.push("/");
+        })
+        .catch((error) => {
+          setError(error);
+        });
+    }
   };
 
   return (
@@ -43,12 +55,13 @@ const Complain = () => {
       </div>
       <Form onSubmit={onSubmit}>
         <Input
-          label={"complainants name"}
+          label={"Complainant's name"}
           value={state.name}
           onChange={onChange}
           type={"text"}
           name={"name"}
           required={true}
+          error={inputErr.nameErr}
         />
         <Input
           type={"date"}
@@ -58,6 +71,7 @@ const Complain = () => {
           name={"date"}
           required={true}
         />
+
         <Input
           type={"text"}
           value={state.againstName}
@@ -67,7 +81,9 @@ const Complain = () => {
           }
           name={"againstName"}
           required={true}
+          error={inputErr.againstNameErr}
         />
+
         <Input
           type={"number"}
           value={state.contact}
@@ -75,16 +91,24 @@ const Complain = () => {
           label={"Contact:"}
           name={"contact"}
           required={true}
+          error={inputErr.contactErr}
         />
         <Input
           type={"text"}
-          value={state.description}
+          value={state.details}
           onChange={onChange}
           label={"The complaint is regarding:"}
-          name={"description"}
+          name={"details"}
           required={true}
+          error={inputErr.descErr}
         />
-        <Dropdown value={state.city} name={"city"} onChange={onChange} />
+        <Dropdown
+          value={state.city}
+          name={"city"}
+          options={cities}
+          label={"city"}
+          onChange={onChange}
+        />
         {error ? <Alert variant="danger">{error}</Alert> : null}
         <Button className="w-100" type="submit">
           Submit

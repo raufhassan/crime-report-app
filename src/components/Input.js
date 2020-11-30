@@ -1,6 +1,6 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-const Input = ({ label, onChange, type, value, name, required }) => {
+const Input = ({ label, onChange, type, value, name, required, error }) => {
   return (
     <Form.Group>
       <Form.Label>{label}</Form.Label>
@@ -11,6 +11,7 @@ const Input = ({ label, onChange, type, value, name, required }) => {
         onChange={onChange}
         required={required}
       />
+      {error ? <span className="error">{error}</span> : null}
     </Form.Group>
   );
 };

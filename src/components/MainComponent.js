@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./privateRoute";
-import SignUp from "../features/signUp";
-import Login from "../features/signIn";
-import Home from "../features/home";
+import SignUp from "../features/SignUp";
+import Login from "../features/SignIn";
+import Home from "../features/Dashboard";
 import { AuthProvider } from "../providers/AuthProvider";
-import ForgotPassword from "../features/forgotPwd";
+import ForgotPassword from "../features/ForgotPassword";
 import Navbar from "./Navbar";
-import Complain from "../features/complain";
+import AddReport from "../features/AddReport";
 const MainComponent = () => {
   return (
     <Router>
@@ -18,7 +18,7 @@ const MainComponent = () => {
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={Login} />
           <Route path="/forgot-password" component={ForgotPassword} />
-          <PrivateRoute exact path="/complain" component={Complain} />
+          <PrivateRoute exact path="/add-report" component={AddReport} />
         </Switch>
       </AuthProvider>
     </Router>

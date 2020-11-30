@@ -33,7 +33,7 @@ const ForgotPassword = () => {
           <Card.Body>
             <h2 className="text-center mb-4">Password Reset</h2>
             {error ? <Alert variant="danger">{error}</Alert> : null}
-            {message && <Alert variant="success">{message}</Alert>}
+            {message ? <Alert variant="success">{message}</Alert> : null}
             <Form onSubmit={handleSubmit}>
               <Form.Group id="email">
                 <Form.Label>Email</Form.Label>
