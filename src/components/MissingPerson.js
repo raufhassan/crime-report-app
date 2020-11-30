@@ -31,8 +31,7 @@ const MissingPerson = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const isvalid = validationFunc(inputErr, state, setInputErr);
-    console.log(isvalid);
-    if (isvalid.length === 0) {
+    if (!isvalid) {
       state.userId = currentUser.uid;
       Firebase.database()
         .ref("missingPersons")

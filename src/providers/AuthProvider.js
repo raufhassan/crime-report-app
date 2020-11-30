@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FirebaseAuth } from "../config/firebase";
-import { useHistory } from "react-router-dom";
 
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  const history = useHistory();
   const signup = (email, password) => {
     return FirebaseAuth.createUserWithEmailAndPassword(email, password);
   };
@@ -18,7 +16,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     return FirebaseAuth.signOut();
-    history.push("/login");
   };
 
   const resetPassword = (email) => {

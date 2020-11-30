@@ -34,7 +34,7 @@ const Complain = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const isvalid = validationFunc(inputErr, state, setInputErr);
-    if (isvalid.length === 0) {
+    if (!isvalid) {
       state.userId = currentUser.uid;
       Firebase.database()
         .ref("complains")
