@@ -28,11 +28,12 @@ const CrimeReport = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    state["userId"] = currentUser.uid;
     const isError = validationFunc(inputErr, state, setInputErr);
     if (!isError) {
-      state.userId = currentUser.uid;
       Firebase.database()
         .ref("crimes")
+        .child(state.city)
         .push(state)
         .then((docRef) => {
           history.push("/");

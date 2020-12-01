@@ -8,6 +8,7 @@ import { AuthProvider } from "../providers/AuthProvider";
 import ForgotPassword from "../features/ForgotPassword";
 import Navbar from "./Navbar";
 import AddReport from "../features/AddReport";
+import CityReport from "../features/CityReportDetail";
 const MainComponent = () => {
   return (
     <Router>
@@ -19,6 +20,7 @@ const MainComponent = () => {
           <Route path="/login" component={Login} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <PrivateRoute exact path="/add-report" component={AddReport} />
+          <Route path="/city-report/:name" component={CityReport} />
         </Switch>
       </AuthProvider>
     </Router>

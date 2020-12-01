@@ -1,4 +1,8 @@
 const cities = [
+  "Karachi",
+  "Sukkur",
+  "Peshawar",
+  "Islamabad",
   "Huntsville",
   "Anchorage",
   "Phoenix",
